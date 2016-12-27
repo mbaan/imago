@@ -1,4 +1,4 @@
-#include <Python.h>
+#include <Python/Python.h>
 #include <math.h>
 
 /* TODO delete or document this
