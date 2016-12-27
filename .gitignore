@@ -1,3 +1,14 @@
+# virtualenv
+.Python
+bin/
+include/
+lib/
+pip-selfcheck.json
+
+# test images
+test_images/
+
+# rest
 *.pyc
 *.so
 *.log
