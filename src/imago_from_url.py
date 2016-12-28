@@ -33,8 +33,6 @@ class Logger:
 
 def argument_parser():
     parser = argparse.ArgumentParser(description=__doc__)
-    # parser.add_argument('url', metavar='url',
-    #                     help="image url")
     parser.add_argument('urls', metavar='url', nargs='+',
                         help="image to analyse")
     parser.add_argument('-w', type=int, default=640,
@@ -79,7 +77,8 @@ def load_image_from_url(url, width):
     return image
 
 def get_board_for_image(image, do_something, logger, show_all, last_board):
-
+    ### Caching this makes lighting condition changes not get detected. Plus it only adds
+    ### small speed value on startup. Consider removing?
     # cache_dir = "saved/cache"
     # filename = "%s/game_%s" % (cache_dir,str(image.size[0]))
     # if os.path.exists(filename):
@@ -93,8 +92,7 @@ def get_board_for_image(image, do_something, logger, show_all, last_board):
     #     pickle.dump((lines, l1, l2, bounds, hough), d_file)
     #     d_file.close()
 
-
-    # Find intersections
+    # Find grid, lines and intersections if they are not already available from the previous board state
     if last_board:
         grid, lines, intersections = last_board['grid'], last_board['lines'], last_board['intersections']
     else:
