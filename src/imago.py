@@ -23,7 +23,7 @@ def argument_parser():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('files', metavar='file', nargs='+',
                         help="image to analyse")
-    parser.add_argument('-w', type=int, default=640,
+    parser.add_argument('-w', type=int, default=1280,
                     help="scale image to the specified width before analysis")
     parser.add_argument('-m', '--manual', dest='manual_mode',
                         action='store_true',
@@ -41,12 +41,12 @@ def argument_parser():
                         help="report progress")
     parser.add_argument('--rng-seed', dest='rng_seed', help="Specify random number generator seed, for consistent test results.")
     return parser
- 
+
 
 # TODO factor this into smaller functions
 def main():
     """Main function of the program."""
-    
+
     parser = argument_parser()
     args = parser.parse_args()
 
@@ -62,7 +62,7 @@ def main():
         return 1
     if image.mode == 'P':
         image = image.convert('RGB')
-    
+
     if image.size[0] > args.w:
         image = image.resize((args.w, int((float(args.w)/image.size[0]) *
                               image.size[1])), Image.ANTIALIAS)
@@ -95,7 +95,7 @@ def main():
     else:
         def logger(m):
             pass
-        
+
     if args.manual_mode:
         import manual
         try:
@@ -142,7 +142,7 @@ def main():
             print board.asSGFsetPos()
         else:
             print board
-    
+
     else:
         game = output.Game(19, board) #TODO size parameter
         for f in args.files[1:]:
