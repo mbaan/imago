@@ -15,7 +15,9 @@ from Queue import Queue, Empty
 
 import pygame
 from pygame.locals import QUIT, KEYDOWN
-import Image
+from PIL import Image
+
+
 
 from camera import Camera
 
@@ -54,7 +56,7 @@ class Capture:
         """Run live preview on the screen."""
         clock = pygame.time.Clock()
         done = False
-        while not done: 
+        while not done:
             if q:
                 try:
                     line = q.get_nowait() # or q.get(timeout=.1)
@@ -100,7 +102,7 @@ class Capture:
             if event.type != KEYDOWN:
                 continue
             self.take()
-            
+
     def take(self):
         """Take a new image from the camera."""
         print "taking pic"
@@ -134,9 +136,9 @@ def main():
 
         q = Queue()
         t = Thread(target=enqueue_input, args=(q,))
-        t.daemon = True 
+        t.daemon = True
         t.start()
-        
+
         capture.live(q)
 
         clock = pygame.time.Clock()
@@ -146,7 +148,7 @@ def main():
                 line = q.get_nowait() # or q.get(timeout=.1)
             except Empty:
                 pass
-            else: 
+            else:
                 if line == "take\n":
                     capture.take()
                 elif line == "exit\n":
@@ -161,7 +163,7 @@ def main():
             capture.manual()
 
     del capture
-    
+
 if __name__ == '__main__':
     try:
         main()

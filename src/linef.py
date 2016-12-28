@@ -27,7 +27,7 @@ def prepare(image, show_image, logger):
     show_image(im_h, "high pass filters")
 
     return im_h
- 
+
 def transform(image, hough, show_image):
     """Produces a simplified Hough transformation of the input image."""
 
@@ -37,7 +37,7 @@ def transform(image, hough, show_image):
 
     # im_hough = filters.peaks(im_hough)
     # show_image(im_hough, "peak extraction")
-               
+
     im_h2 = filters.high_pass(im_hough, 128)
     show_image(im_h2, "second high pass filters")
 
@@ -61,7 +61,7 @@ def run_ransac(image):
                 if y < 30:
                     data.append((width - x, y + height))
 
-    dist = 3 
+    dist = 3
     [(line, points), (line2, points2)] = ransac.ransac_multi(2, data, dist, 250)
     line_to_points = lambda (a, b, c), x: (x, (a*x + c) / (- b))
     # TODO width should not be here vvv
@@ -72,7 +72,7 @@ def run_ransac(image):
 
 def find_lines(image, show_image, logger):
     """Find lines in the *image*."""
-    
+
     logger("preprocessing")
     show_image(image, "original image")
 
@@ -81,17 +81,17 @@ def find_lines(image, show_image, logger):
     hough = Hough.default(im_h)
 
     logger("hough transform")
-    
+
     im_h2 = transform(im_h, hough, show_image)
 
     logger("finding the lines")
 
-    r_lines, l1, l2 = run_ransac(im_h2) 
+    r_lines, l1, l2 = run_ransac(im_h2)
 
     lines = map(hough.lines_from_list, r_lines)
 
     # TODO refactor gridf to get rid of this:
-    bounds = sum(map(lambda l: [l[0], l[-1]], r_lines), []) 
+    bounds = sum(map(lambda l: [l[0], l[-1]], r_lines), [])
     # sum(list, []) = flatten list
 
     # TODO do this only if show_all is true:
@@ -110,12 +110,12 @@ def line_from_angl_dist((angle, distance), size):
     if pi / 4 < angle < 3 * pi / 4:
         y1 = - size[1] / 2
         x1 = int(round((y1 * cos(angle) + distance) / sin(angle))) + size[0] / 2
-        y2 = size[1] / 2 
+        y2 = size[1] / 2
         x2 = int(round((y2 * cos(angle) + distance) / sin(angle))) + size[0] / 2
         return [(x1, 0), (x2, size[1])]
     else:
         x1 = - size[0] / 2
         y1 = int(round((x1 * sin(angle) - distance) / cos(angle))) + size[1] / 2
-        x2 = size[0] / 2 
+        x2 = size[0] / 2
         y2 = int(round((x2 * sin(angle) - distance) / cos(angle))) + size[1] / 2
         return [(0, y1), (size[0], y2)]

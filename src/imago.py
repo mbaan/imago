@@ -16,7 +16,7 @@ except ImportError, msg:
 
 import linef
 import intrsc
-import gridf_new as gridf
+import gridf
 import output
 
 def argument_parser():

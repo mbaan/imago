@@ -5,13 +5,13 @@ This module handles various backends (different for every OS) for streaming the 
 
 import os
 
-    
-import Image
+
+from PIL import Image
 import cv
 
 class Camera:
     """Implement basic camera capabilities
-    
+
     This class has different implementations for different OS. On posix
     systems it calls to opencv, on Windows to VideoCapture."""
     # TODO what about win 64?
@@ -29,7 +29,7 @@ class Camera:
         for _ in range(5): #HACK TODO document this
             im = cv.QueryFrame(self._cam)
         return Image.frombytes("RGB", cv.GetSize(im), im.tobytes(), "raw",
-                                "BGR", 0, 1) 
-    
+                                "BGR", 0, 1)
+
     def __del__(self):
-        del self._cam 
+        del self._cam
